@@ -186,5 +186,180 @@ const nceWords = {
       { en: "sign", cn: "标志" },
       { en: "maybe", cn: "也许" }
     ]
+  },
+  11: {
+    title: "三上 Unit 1",
+    words: [
+      { en: "me", cn: "我" },
+      { en: "it", cn: "它" },
+      { en: "be", cn: "是（am/is/are）" },
+      { en: "on", cn: "在…上面" },
+      { en: "this", cn: "这，这个" },
+      { en: "ruler", cn: "尺子" },
+      { en: "you", cn: "你，你们" },
+      { en: "I", cn: "我" },
+      { en: "thank", cn: "感谢，向表示感谢" },
+      { en: "nice", cn: "令人愉快的" },
+      { en: "to", cn: "到，向，往" },
+      { en: "meet", cn: "结识；遇见" },
+      { en: "too", cn: "也" },
+      { en: "hi", cn: "嗨，喂，你好" },
+      { en: "but", cn: "但，但是" }
+    ]
+  },
+  12: {
+    title: "三上 Unit 2",
+    words: [
+      { en: "chocolate", cn: "巧克力" },
+      { en: "coffee", cn: "咖啡" },
+      { en: "Chinese", cn: "中文" },
+      { en: "sofa", cn: "沙发" },
+      { en: "hamburger", cn: "汉堡" },
+      { en: "cookie", cn: "饼干" },
+      { en: "salad", cn: "沙拉" },
+      { en: "what", cn: "什么" },
+      { en: "in", cn: "在……里面" },
+      { en: "English", cn: "英语" },
+      { en: "know", cn: "知道；认识" },
+      { en: "yes", cn: "是，对" },
+      { en: "can", cn: "能, 可以" },
+      { en: "get", cn: "得到" },
+      { en: "a", cn: "一，一个（an）" },
+      { en: "word", cn: "单词" },
+      { en: "guess", cn: "猜，猜测" },
+      { en: "one", cn: "一" },
+      { en: "like", cn: "喜欢" }
+    ]
+  },
+  13: {
+    title: "三上 Unit 3",
+    words: [
+      { en: "good", cn: "好的" },
+      { en: "morning", cn: "早晨；上午" },
+      { en: "your", cn: "你的；你们的" },
+      { en: "name", cn: "名字" },
+      { en: "my", cn: "我的" },
+      { en: "Mr", cn: "先生" },
+      { en: "boy", cn: "男孩" },
+      { en: "and", cn: "和" },
+      { en: "girl", cn: "女孩" },
+      { en: "hello", cn: "你好" },
+      { en: "everyone", cn: "每个人，人人" },
+      { en: "card", cn: "卡片" },
+      { en: "student", cn: "学生" },
+      { en: "want", cn: "想要" },
+      { en: "help", cn: "帮助，帮忙" },
+      { en: "how", cn: "多少；怎样，如何" },
+      { en: "last", cn: "最后" },
+      { en: "of", cn: "…的" },
+      { en: "for", cn: "为了" },
+      { en: "Ms", cn: "女士" },
+      { en: "Miss", cn: "小姐" },
+      { en: "Mrs", cn: "女士，夫人" }
+    ]
+  },
+  14: {
+    title: "三上 Unit 4",
+    words: [
+      { en: "red", cn: "红色" },
+      { en: "yellow", cn: "黄色" },
+      { en: "green", cn: "绿色" },
+      { en: "blue", cn: "蓝色" },
+      { en: "white", cn: "白色" },
+      { en: "colour", cn: "颜色" },
+      { en: "pencil", cn: "铅笔" },
+      { en: "left", cn: "左边" },
+      { en: "hand", cn: "手" },
+      { en: "right", cn: "右边" },
+      { en: "finger", cn: "手指" },
+      { en: "do", cn: "做" },
+      { en: "spell", cn: "拼写" },
+      { en: "that", cn: "那，那个" },
+      { en: "look", cn: "看，瞧，望" },
+      { en: "cool", cn: "酷的，帅的" },
+      { en: "teach", cn: "教" },
+      { en: "first", cn: "第一的；首先；最初" },
+      { en: "OK", cn: "好，可以" }
+    ]
+  },
+  15: {
+    title: "三上 Unit 5",
+    words: [
+      { en: "two", cn: "二" },
+      { en: "three", cn: "三" },
+      { en: "four", cn: "四" },
+      { en: "five", cn: "五" },
+      { en: "six", cn: "六" },
+      { en: "seven", cn: "七" },
+      { en: "nine", cn: "九" },
+      { en: "the", cn: "这，那" },
+      { en: "again", cn: "再，再次" },
+      { en: "step", cn: "步骤" },
+      { en: "letter", cn: "字母" },
+      { en: "from", cn: "从" },
+      { en: "each", cn: "每个" },
+      { en: "put", cn: "放" },
+      { en: "them", cn: "它们" }
+    ]
+  },
+  16: {
+    title: "三上 Unit 6",
+    words: [
+      { en: "face", cn: "脸，面部" },
+      { en: "ear", cn: "耳朵" },
+      { en: "eye", cn: "眼睛" },
+      { en: "nose", cn: "鼻子" },
+      { en: "mouth", cn: "嘴巴" },
+      { en: "its", cn: "它的" },
+      { en: "these", cn: "这些" },
+      { en: "hair", cn: "头发" },
+      { en: "write", cn: "写" },
+      { en: "big", cn: "大的" },
+      { en: "under", cn: "在…下面" },
+      { en: "his", cn: "他的" },
+      { en: "now", cn: "现在" },
+      { en: "head", cn: "头" }
+    ]
+  },
+  17: {
+    title: "三上 Unit 7",
+    words: [
+      { en: "see", cn: "看见；明白" },
+      { en: "nod", cn: "点头" },
+      { en: "keep", cn: "保持" },
+      { en: "quiet", cn: "安静" },
+      { en: "listen", cn: "听" },
+      { en: "teacher", cn: "老师" },
+      { en: "have", cn: "有，拥有" },
+      { en: "up", cn: "向上" },
+      { en: "they", cn: "他们" },
+      { en: "body", cn: "身体" },
+      { en: "friend", cn: "朋友" },
+      { en: "myself", cn: "我自己" },
+      { en: "heart", cn: "心，心脏；内心" }
+    ]
+  },
+  18: {
+    title: "三上 Unit 8",
+    words: [
+      { en: "bird", cn: "鸟" },
+      { en: "horse", cn: "马" },
+      { en: "monkey", cn: "猴子" },
+      { en: "fish", cn: "鱼" },
+      { en: "bear", cn: "熊" },
+      { en: "swim", cn: "游泳" },
+      { en: "walk", cn: "走，走路" },
+      { en: "fly", cn: "飞，飞翔" },
+      { en: "jump", cn: "跳，跳跃" },
+      { en: "arm", cn: "手臂" },
+      { en: "leg", cn: "腿" },
+      { en: "tiger", cn: "老虎" },
+      { en: "then", cn: "然后，接下来" },
+      { en: "let", cn: "让" },
+      { en: "us", cn: "我们" },
+      { en: "move", cn: "移动" },
+      { en: "our", cn: "我们的" },
+      { en: "foot", cn: "脚" }
+    ]
   }
 };
