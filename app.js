@@ -139,15 +139,15 @@
 
   // --- Finger Map (for guide) ---
   const fingerMap = {
-    'left-pinky':  { label: '左小指', keys: ['Q', 'A', 'Z'], color: 'var(--finger-left-pinky)' },
-    'left-ring':   { label: '左无名指', keys: ['W', 'S', 'X'], color: 'var(--finger-left-ring)' },
+    'left-pinky': { label: '左小指', keys: ['Q', 'A', 'Z'], color: 'var(--finger-left-pinky)' },
+    'left-ring': { label: '左无名指', keys: ['W', 'S', 'X'], color: 'var(--finger-left-ring)' },
     'left-middle': { label: '左中指', keys: ['E', 'D', 'C'], color: 'var(--finger-left-middle)' },
-    'left-index':  { label: '左食指', keys: ['R', 'T', 'F', 'G', 'V', 'B'], color: 'var(--finger-left-index)' },
+    'left-index': { label: '左食指', keys: ['R', 'T', 'F', 'G', 'V', 'B'], color: 'var(--finger-left-index)' },
     'right-index': { label: '右食指', keys: ['Y', 'U', 'H', 'J', 'N', 'M'], color: 'var(--finger-right-index)' },
-    'right-middle':{ label: '右中指', keys: ['I', 'K'], color: 'var(--finger-right-middle)' },
-    'right-ring':  { label: '右无名指', keys: ['O', 'L'], color: 'var(--finger-right-ring)' },
+    'right-middle': { label: '右中指', keys: ['I', 'K'], color: 'var(--finger-right-middle)' },
+    'right-ring': { label: '右无名指', keys: ['O', 'L'], color: 'var(--finger-right-ring)' },
     'right-pinky': { label: '右小指', keys: ['P'], color: 'var(--finger-right-pinky)' },
-    'thumb':       { label: '大拇指', keys: ['SPACE'], color: 'var(--finger-thumb)' },
+    'thumb': { label: '大拇指', keys: ['SPACE'], color: 'var(--finger-thumb)' },
   };
 
   // --- Audio (Web Audio API) ---
@@ -167,7 +167,7 @@
       gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
       osc.connect(gain); gain.connect(ctx.destination);
       osc.start(); osc.stop(ctx.currentTime + duration);
-    } catch (e) {}
+    } catch (e) { }
   }
   function playCorrect() { playTone(880, 0.12, 'sine', 0.12); }
   function playWrong() { playTone(220, 0.25, 'square', 0.08); }
@@ -248,7 +248,7 @@
     html += `<div class="target-display${hiddenClass}">`;
     targetChars.forEach((ch, i) => {
       let cls = 'waiting';
-      
+
       if (i < currentIndex) {
         cls = 'done';
       } else if (audioDictationEnabled) {
@@ -451,13 +451,18 @@
         let delay = 300;
 
         // Track mastery in favorites
-        if (isWordLike && !currentWordHadError) {
-          const mastered = recordFavCorrect(currentWord.text);
-          if (mastered) {
-            // Could show a brief "mastered" notification
+        if (isWordLike) {
+          if (!currentWordHadError) {
+            const mastered = recordFavCorrect(currentWord.text);
+            if (mastered) {
+              // Could show a brief "mastered" notification
+            }
+          } else {
+            // 如果输错了，将该词重新插入队列，要求连输3次
+            challengeQueue.splice(queueIndex, 0, currentWord, currentWord, currentWord);
           }
         }
-        
+
         if (isWordLike && !audioDictationEnabled) {
           window.playDictationWord(currentWord.text);
           delay = 1200; // give more time to listen
@@ -495,9 +500,9 @@
       // 恢复输入错误的提示：发声和字符晃动
       currentWrongCount++;
       const charEl = $(`#char-${currentIndex}`);
-      if (charEl) { 
-        charEl.classList.add('error'); 
-        setTimeout(() => charEl.classList.remove('error'), 400); 
+      if (charEl) {
+        charEl.classList.add('error');
+        setTimeout(() => charEl.classList.remove('error'), 400);
         if (currentWrongCount >= 3) {
           charEl.classList.add('reveal-hint');
         }
@@ -508,15 +513,15 @@
     updateStats();
   }
 
-  window.playDictationWord = function(wordText) {
+  window.playDictationWord = function (wordText) {
     if (!wordText && isPlaying) {
       const currentWord = challengeQueue[queueIndex];
       if (currentWord) wordText = currentWord.text;
     }
-    
+
     if (wordText && soundEnabled) {
       const cleanText = wordText.trim();
-      
+
       if (window.currentAudio) {
         window.currentAudio.pause();
         window.currentAudio = null;
@@ -740,7 +745,7 @@
 
       for (const fav of displayFavs) {
         const streak = fav.correctStreak || 0;
-        const dots = Array.from({length: 5}, (_, i) =>
+        const dots = Array.from({ length: 5 }, (_, i) =>
           `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;margin:0 1px;background:${i < streak ? 'var(--neon-green)' : 'rgba(255,255,255,0.12)'}"></span>`
         ).join('');
         html += `
@@ -991,7 +996,7 @@
         if (keyChar) {
           handleKeyPress({
             key: keyChar.toLowerCase(),
-            preventDefault: () => {},
+            preventDefault: () => { },
             ctrlKey: false, metaKey: false, altKey: false,
             length: keyChar.length
           });
@@ -1015,7 +1020,7 @@
       highlightToggle.classList.toggle('off', !highlightEnabled);
       if (!highlightEnabled) clearKeyHighlights();
       else if (isPlaying && currentIndex < targetChars.length) highlightKey(targetChars[currentIndex]);
-      
+
       // Re-render target to update the blinking cursor state
       if (isPlaying) {
         renderTarget();
@@ -1038,7 +1043,7 @@
         audioDictationEnabled = !audioDictationEnabled;
         audioDictationToggle.innerHTML = `🎧 听写模式：<strong>${audioDictationEnabled ? '开' : '关'}</strong>`;
         audioDictationToggle.classList.toggle('off', !audioDictationEnabled);
-        
+
         // When dictation is turned ON, we should play the current word, and hide target word
         if (isPlaying && audioDictationEnabled && targetChars.length > 0) {
           playDictationWord();
