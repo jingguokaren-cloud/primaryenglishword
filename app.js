@@ -459,7 +459,7 @@
             }
           } else {
             // 如果输错了，将该词重新插入队列，要求连输3次
-            challengeQueue.splice(queueIndex, 0, currentWord, currentWord, currentWord);
+            challengeQueue.splice(queueIndex, 0, currentWord, currentWord);
           }
         }
 
