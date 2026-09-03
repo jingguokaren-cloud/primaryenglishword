@@ -1,4 +1,4 @@
-// 小学教材（三下）单词数据
+// 小学教材（三下、三上、四上）单词数据
 
 const nceWords = {
   1: {
@@ -360,6 +360,187 @@ const nceWords = {
       { en: "move", cn: "移动" },
       { en: "our", cn: "我们的" },
       { en: "foot", cn: "脚" }
+    ]
+  },
+  19: {
+    title: "四上 Unit 1",
+    words: [
+      { en: "beautiful", cn: "美丽的" },
+      { en: "flower", cn: "花" },
+      { en: "glad", cn: "高兴的" },
+      { en: "seat", cn: "座位" },
+      { en: "fine", cn: "很好的" },
+      { en: "bathroom", cn: "卫生间；浴室" },
+      { en: "baby", cn: "婴儿" },
+      { en: "problem", cn: "问题" },
+      { en: "tea", cn: "茶" },
+      { en: "around", cn: "周围" },
+      { en: "great", cn: "好极了" },
+      { en: "guest", cn: "客人" },
+      { en: "host", cn: "主人" },
+      { en: "small", cn: "小的" },
+      { en: "gift", cn: "礼物" }
+    ]
+  },
+  20: {
+    title: "四上 Unit 2",
+    words: [
+      { en: "yourself", cn: "你自己" },
+      { en: "rice", cn: "米饭" },
+      { en: "soup", cn: "汤" },
+      { en: "could", cn: "可以" },
+      { en: "pass", cn: "传递" },
+      { en: "here", cn: "这里" },
+      { en: "house", cn: "房子" },
+      { en: "if", cn: "如果" },
+      { en: "feel", cn: "感觉" },
+      { en: "full", cn: "饱的" },
+      { en: "drop", cn: "掉落" },
+      { en: "spoon", cn: "勺子" },
+      { en: "floor", cn: "地板" },
+      { en: "pick", cn: "捡起" },
+      { en: "end", cn: "结束" },
+      { en: "really", cn: "非常；真的" },
+      { en: "any", cn: "任何" },
+      { en: "taste", cn: "尝起来" }
+    ]
+  },
+  21: {
+    title: "四上 Unit 3",
+    words: [
+      { en: "noodle", cn: "面条" },
+      { en: "enjoy", cn: "享受" },
+      { en: "then", cn: "然后" },
+      { en: "last", cn: "最后" },
+      { en: "minute", cn: "分钟" },
+      { en: "only", cn: "唯一的；只有" },
+      { en: "cook", cn: "烹饪；厨师" },
+      { en: "dumpling", cn: "饺子" },
+      { en: "into", cn: "到……里面" },
+      { en: "pot", cn: "锅" },
+      { en: "boil", cn: "煮沸" },
+      { en: "careful", cn: "小心的" },
+      { en: "hot", cn: "热的" },
+      { en: "cold", cn: "冷的" },
+      { en: "remember", cn: "记得" },
+      { en: "fire", cn: "火" }
+    ]
+  },
+  22: {
+    title: "四上 Unit 4",
+    words: [
+      { en: "kitchen", cn: "厨房" },
+      { en: "sweep", cn: "清扫" },
+      { en: "dish", cn: "盘子；菜肴" },
+      { en: "rubbish", cn: "垃圾" },
+      { en: "clear", cn: "清理；清楚的" },
+      { en: "chore", cn: "家务" },
+      { en: "dirty", cn: "脏的" },
+      { en: "well", cn: "（语气词）啊；健康的；好" },
+      { en: "bin", cn: "箱子" },
+      { en: "because", cn: "因为" },
+      { en: "do", cn: "做" },
+      { en: "agree", cn: "同意" }
+    ]
+  },
+  23: {
+    title: "四上 Unit 5",
+    words: [
+      { en: "smile", cn: "微笑" },
+      { en: "open", cn: "开着的；打开" },
+      { en: "cheer", cn: "鼓励" },
+      { en: "ready", cn: "准备好的" },
+      { en: "kind", cn: "友善的" },
+      { en: "lot", cn: "许多" },
+      { en: "happy", cn: "开心的" },
+      { en: "share", cn: "分享" },
+      { en: "hard", cn: "努力地" },
+      { en: "animal", cn: "动物" },
+      { en: "tell", cn: "告诉" },
+      { en: "else", cn: "其他的" },
+      { en: "him", cn: "他" },
+      { en: "grandpa", cn: "爷爷；外公" },
+      { en: "uncle", cn: "叔叔；舅舅" },
+      { en: "aunt", cn: "姑妈；姨妈" },
+      { en: "sister", cn: "姐姐；妹妹" },
+      { en: "leave", cn: "留下；离开" },
+      { en: "note", cn: "便条；笔记" },
+      { en: "sing", cn: "唱歌" },
+      { en: "song", cn: "歌曲" },
+      { en: "warm", cn: "温暖的" },
+      { en: "who", cn: "谁" },
+      { en: "date", cn: "日期" }
+    ]
+  },
+  24: {
+    title: "四上 Unit 6",
+    words: [
+      { en: "birthday", cn: "生日" },
+      { en: "cake", cn: "蛋糕" },
+      { en: "spend", cn: "度过" },
+      { en: "sweet", cn: "体贴的；甜的" },
+      { en: "laugh", cn: "笑" },
+      { en: "all", cn: "全部的" },
+      { en: "surprise", cn: "使惊奇；惊喜" },
+      { en: "funny", cn: "有趣的" },
+      { en: "story", cn: "故事" },
+      { en: "picture", cn: "画；照片" }
+    ]
+  },
+  25: {
+    title: "四上 Unit 7",
+    words: [
+      { en: "worker", cn: "工人" },
+      { en: "doctor", cn: "医生" },
+      { en: "driver", cn: "司机" },
+      { en: "evening", cn: "晚上" },
+      { en: "nurse", cn: "护士" },
+      { en: "farmer", cn: "农民" },
+      { en: "scientist", cn: "科学家" },
+      { en: "policeman", cn: "男警察" },
+      { en: "policewoman", cn: "女警察" },
+      { en: "afternoon", cn: "下午" },
+      { en: "night", cn: "夜晚" },
+      { en: "long", cn: "长的" },
+      { en: "game", cn: "游戏" },
+      { en: "sound", cn: "听起来" },
+      { en: "dear", cn: "亲爱的" },
+      { en: "once", cn: "一次" },
+      { en: "weekend", cn: "周末" },
+      { en: "sit", cn: "坐" },
+      { en: "wish", cn: "愿望；祝愿" },
+      { en: "back", cn: "以前；后面的" },
+      { en: "through", cn: "穿过" },
+      { en: "forward", cn: "向前" },
+      { en: "part", cn: "部分" },
+      { en: "hope", cn: "希望" },
+      { en: "during", cn: "在……期间" },
+      { en: "tree", cn: "树" },
+      { en: "never", cn: "永不" },
+      { en: "old", cn: "老的" },
+      { en: "dance", cn: "跳舞" }
+    ]
+  },
+  26: {
+    title: "四上 Unit 8",
+    words: [
+      { en: "firework", cn: "烟花" },
+      { en: "mooncake", cn: "月饼" },
+      { en: "visit", cn: "拜访" },
+      { en: "meal", cn: "一餐" },
+      { en: "favourite", cn: "最喜欢的" },
+      { en: "festival", cn: "节日" },
+      { en: "far", cn: "远的" },
+      { en: "near", cn: "近的；附近的" }
+    ]
+  },
+  27: {
+    title: "四上 Review",
+    words: [
+      { en: "party", cn: "派对" },
+      { en: "elephant", cn: "大象" },
+      { en: "most", cn: "最" },
+      { en: "Africa", cn: "非洲" }
     ]
   }
 };
