@@ -18,7 +18,6 @@
   const btnStart = $('#btnStart');
   const keyboard = $('#keyboard');
   const lessonSelector = $('#lessonSelector');
-  const typeSelector = $('#typeSelector');
   const celebration = $('#celebration');
   const celebrationTitle = $('#celebrationTitle');
   const celebrationStats = $('#celebrationStats');
@@ -56,7 +55,6 @@
   // Word and phrase/sentence modes
   let selectedLesson = 1;
   let selectedSentenceLesson = (typeof nceSentences !== 'undefined' && nceSentences[9]) ? 9 : 1;
-  let selectedType = 'phrases'; // 'phrases' | 'sentences'
   let selectedFavLesson = 'all'; // 'all' or a lesson key number
 
   // Track if current word had any errors (for auto-add to favorites)
@@ -234,6 +232,23 @@
     setTimeout(() => keyEl.classList.remove('correct-flash', 'wrong-flash'), 300);
   }
 
+  function isPhraseSentenceItem(item) {
+    return currentMode === 'sentences' || (currentMode === 'favorites' && item?.kind === 'sentence');
+  }
+
+  function shouldAutoSkipCharacter(char, item) {
+    return isPhraseSentenceItem(item) && !/[A-Za-z]/.test(char);
+  }
+
+  function advanceAutoSkippedCharacters(item) {
+    let skipped = false;
+    while (currentIndex < targetChars.length && shouldAutoSkipCharacter(targetChars[currentIndex], item)) {
+      currentIndex++;
+      skipped = true;
+    }
+    return skipped;
+  }
+
   // --- Render Target ---
   function renderTarget() {
     if (!isPlaying) return;
@@ -261,7 +276,7 @@
       let cls = 'waiting';
 
       if (i < currentIndex) {
-        cls = 'done';
+        cls = shouldAutoSkipCharacter(ch, currentWord) ? 'done auto-skipped' : 'done';
       } else if (audioDictationEnabled) {
         cls = 'waiting dictation-hidden'; // keep blank visible but text invisible
       } else if (i === currentIndex && highlightEnabled) {
@@ -282,8 +297,8 @@
     if (isSentenceMode) {
       html += `
         <div class="nav-target-buttons">
-          <button id="btnPrevTarget" ${queueIndex <= 0 ? 'disabled' : ''}>⬅️ 上一句</button>
-          <button id="btnNextTarget" ${queueIndex >= challengeQueue.length - 1 ? 'disabled' : ''}>下一句 ➡️</button>
+          <button id="btnPrevTarget" ${queueIndex <= 0 ? 'disabled' : ''}>⬅️ 上一条</button>
+          <button id="btnNextTarget" ${queueIndex >= challengeQueue.length - 1 ? 'disabled' : ''}>下一条 ➡️</button>
         </div>`;
     }
 
@@ -334,7 +349,10 @@
   function generateSentenceChallenge(lessonNum) {
     const lessonData = nceSentences[lessonNum];
     if (!lessonData) return [];
-    const items = Array.isArray(lessonData[selectedType]) ? [...lessonData[selectedType]] : [];
+    const items = [
+      ...(Array.isArray(lessonData.phrases) ? lessonData.phrases : []),
+      ...(Array.isArray(lessonData.sentences) ? lessonData.sentences : [])
+    ];
     for (let i = items.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [items[i], items[j]] = [items[j], items[i]];
@@ -345,7 +363,7 @@
       kind: 'sentence',
       lesson: lessonNum,
       lessonTitle: lessonData.title,
-      contentType: selectedType
+      contentType: 'phrases-and-sentences'
     }));
   }
 
@@ -388,7 +406,7 @@
       kind: w.kind || 'word',
       lesson: w.lesson,
       lessonTitle: getFavoriteLessonTitle(w),
-      contentType: w.contentType || ((w.kind || 'word') === 'sentence' ? 'sentences' : 'words')
+      contentType: w.contentType || ((w.kind || 'word') === 'sentence' ? 'phrases-and-sentences' : 'words')
     }));
   }
 
@@ -413,11 +431,11 @@
       let msg = '请选择其他课次';
       let title = '😢 没有找到练习内容';
       if (currentMode === 'favorites') {
-        msg = '收藏夹为空<br>打错的单词或短语句子会自动加入这里';
+        msg = '收藏夹为空<br>打错的单词、短语和例句会自动加入这里';
         title = '😢 收藏夹为空';
       } else if (currentMode === 'sentences') {
-        msg = '当前课次没有对应的短语或句子';
-        title = '😢 没有找到短语或句子';
+        msg = '当前课次没有对应的短语和例句';
+        title = '😢 没有找到短语和例句';
       }
       practiceArea.innerHTML = `<div class="start-prompt"><h3>${title}</h3><p>${msg}</p></div>`;
       isPlaying = false;
@@ -441,12 +459,49 @@
     currentIndex = 0;
     currentWrongCount = 0;
     currentWordHadError = false;
+    advanceAutoSkippedCharacters(item);
     renderTarget();
+
+    if (currentIndex >= targetChars.length) {
+      completeCurrentTarget();
+      return;
+    }
 
     const isContentMode = currentMode === 'words' || currentMode === 'sentences' || currentMode === 'favorites';
     if (isContentMode && audioDictationEnabled) {
       window.playDictationWord(item.text);
     }
+  }
+
+  function completeCurrentTarget() {
+    queueIndex++;
+    const currentWord = challengeQueue[queueIndex - 1];
+    const isContentMode = currentMode === 'words' || currentMode === 'sentences' || currentMode === 'favorites';
+    const itemKind = currentWord.kind || (currentMode === 'sentences' ? 'sentence' : 'word');
+    let delay = 300;
+
+    // Track mastery in favorites
+    if (isContentMode) {
+      if (!currentWordHadError) {
+        const mastered = recordFavCorrect(currentWord.text, itemKind);
+        if (mastered) {
+          // Could show a brief "mastered" notification
+        }
+      } else {
+        // 如果输错了，将当前内容重新插入队列，要求再次练习
+        const retryCount = currentMode === 'sentences' ? 1 : 2;
+        challengeQueue.splice(queueIndex, 0, ...Array(retryCount).fill(currentWord));
+      }
+    }
+
+    if (isContentMode && !audioDictationEnabled) {
+      window.playDictationWord(currentWord.text);
+      delay = currentMode === 'sentences' ? 1500 : 1200; // give more time to listen
+    } else if (isContentMode && audioDictationEnabled) {
+      delay = 600; // give a slight pause before the next word dictates
+    }
+
+    setTimeout(() => loadNextTarget(), delay);
   }
 
   // --- Handle Key Press ---
@@ -455,10 +510,10 @@
     if (e.ctrlKey || e.metaKey || e.altKey) return;
     const key = e.key;
     if (key.length !== 1) return;
+    const expected = targetChars[currentIndex];
+    if (!expected) return;
     e.preventDefault();
     totalKeys++;
-
-    const expected = targetChars[currentIndex];
     const isCorrect = key.toLowerCase() === expected.toLowerCase();
 
     if (isCorrect) {
@@ -484,36 +539,13 @@
       }
 
       currentIndex++;
+      const skipped = advanceAutoSkippedCharacters(challengeQueue[queueIndex]);
 
       if (currentIndex >= targetChars.length) {
-        queueIndex++;
-        const currentWord = challengeQueue[queueIndex - 1];
-        const isContentMode = currentMode === 'words' || currentMode === 'sentences' || currentMode === 'favorites';
-        const itemKind = currentWord.kind || (currentMode === 'sentences' ? 'sentence' : 'word');
-        let delay = 300;
-
-        // Track mastery in favorites
-        if (isContentMode) {
-          if (!currentWordHadError) {
-            const mastered = recordFavCorrect(currentWord.text, itemKind);
-            if (mastered) {
-              // Could show a brief "mastered" notification
-            }
-          } else {
-            // 如果输错了，将当前内容重新插入队列，要求再次练习
-            const retryCount = currentMode === 'sentences' ? 1 : 2;
-            challengeQueue.splice(queueIndex, 0, ...Array(retryCount).fill(currentWord));
-          }
-        }
-
-        if (isContentMode && !audioDictationEnabled) {
-          window.playDictationWord(currentWord.text);
-          delay = currentMode === 'sentences' ? 1500 : 1200; // give more time to listen
-        } else if (isContentMode && audioDictationEnabled) {
-          delay = 600; // give a slight pause before the next word dictates
-        }
-
-        setTimeout(() => loadNextTarget(), delay);
+        if (skipped) renderTarget();
+        completeCurrentTarget();
+      } else if (skipped) {
+        renderTarget();
       } else {
         const nextEl = $(`#char-${currentIndex}`);
         if (highlightEnabled) {
@@ -689,10 +721,10 @@
 
     let html = '<div class="favorites-list">';
     html += '<h3>⭐ 收藏夹</h3>';
-    html += '<p class="fav-subtitle">打字出错的单词、短语或句子会自动添加到这里 · 累计正确5次自动掌握 ✨</p>';
+    html += '<p class="fav-subtitle">打字出错的单词、短语和例句会自动添加到这里 · 累计正确5次自动掌握 ✨</p>';
 
     if (favs.length === 0) {
-      html += '<div class="fav-empty">还没有收藏的单词、短语或句子 👍<br>继续保持！</div>';
+      html += '<div class="fav-empty">还没有收藏的单词、短语和例句 👍<br>继续保持！</div>';
     } else {
       const kindFavs = selectedFavKind === 'all'
         ? favs
@@ -704,7 +736,7 @@
       html += '<div class="fav-filter-bar">';
       html += `<button class="fav-filter-btn ${selectedFavKind === 'all' ? 'active' : ''}" data-fav-kind="all">全部 (${favs.length})</button>`;
       html += `<button class="fav-filter-btn ${selectedFavKind === 'word' ? 'active' : ''}" data-fav-kind="word">单词 (${wordCount})</button>`;
-      html += `<button class="fav-filter-btn ${selectedFavKind === 'sentence' ? 'active' : ''}" data-fav-kind="sentence">短语/句子 (${sentenceCount})</button>`;
+      html += `<button class="fav-filter-btn ${selectedFavKind === 'sentence' ? 'active' : ''}" data-fav-kind="sentence">短语和例句 (${sentenceCount})</button>`;
       html += '</div>';
 
       // Build two-level grouping: semester → lessons
@@ -762,9 +794,7 @@
       for (const fav of displayFavs) {
         const streak = fav.correctStreak || 0;
         const kind = fav.kind || 'word';
-        const kindLabel = kind === 'sentence'
-          ? (fav.contentType === 'phrases' ? '短语' : fav.contentType === 'sentences' ? '句子' : '短语/句子')
-          : '单词';
+        const kindLabel = kind === 'sentence' ? '短语和例句' : '单词';
         const dots = Array.from({ length: 5 }, (_, i) =>
           `<span style="display:inline-block;width:8px;height:8px;border-radius:50%;margin:0 1px;background:${i < streak ? 'var(--neon-green)' : 'rgba(255,255,255,0.12)'}"></span>`
         ).join('');
@@ -779,7 +809,7 @@
       }
       html += `
         <div class="fav-actions">
-          <button id="btnPracticeFavs">📝 练习${selectedFavKind === 'all' ? '全部' : selectedFavKind === 'word' ? '单词' : '短语/句子'}${selectedFavGroup === 'all' ? '' : '（当前年级）'}</button>
+          <button id="btnPracticeFavs">📝 练习${selectedFavKind === 'all' ? '全部' : selectedFavKind === 'word' ? '单词' : '短语和例句'}${selectedFavGroup === 'all' ? '' : '（当前年级）'}</button>
           <button id="btnClearFavs" class="danger">🗑️ 清空全部</button>
         </div>`;
     }
@@ -832,7 +862,7 @@
     const btnClear = $('#btnClearFavs');
     if (btnClear) {
       btnClear.addEventListener('click', () => {
-        if (confirm('确定要清空所有收藏的单词、短语和句子吗？')) {
+        if (confirm('确定要清空所有收藏的单词、短语和例句吗？')) {
           clearAllFavorites();
           renderFavorites();
         }
@@ -849,10 +879,9 @@
     // Update tabs
     $$('.mode-tab').forEach(tab => tab.classList.toggle('active', tab.dataset.mode === mode));
 
-    // Show/hide lesson and content-type selectors
+    // Show/hide lesson selector
     const hasLessons = mode === 'words' || mode === 'sentences';
     lessonSelector.classList.toggle('show', hasLessons);
-    if (typeSelector) typeSelector.hidden = mode !== 'sentences';
     if (mode === 'words') buildWordLessonSelector();
     if (mode === 'sentences') buildSentenceLessonSelector();
 
@@ -876,7 +905,7 @@
     const title = mode === 'words' ? '📚 单词' : '📝 短语和例句';
     const desc = mode === 'words'
       ? '先选择年级和 Unit，再开始单词输入练习<br>打错的单词会自动加入收藏夹'
-      : '先选择短语或例句，再按年级和 Unit 练习英文输入<br>打错的内容会自动加入收藏夹';
+      : '先选择年级和 Unit，再练习短语和例句英文输入<br>符号、数字和空格会自动跳过，打错的内容会自动加入收藏夹';
 
     practiceArea.innerHTML = `
       <div class="start-prompt">
@@ -1066,15 +1095,6 @@
     // Mode tabs
     $$('.mode-tab').forEach(tab => {
       tab.addEventListener('click', () => setMode(tab.dataset.mode));
-    });
-
-    // Phrase / sentence type tabs
-    $$('.type-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
-        selectedType = tab.dataset.type;
-        $$('.type-tab').forEach(t => t.classList.toggle('active', t.dataset.type === selectedType));
-        if (currentMode === 'sentences' && isPlaying) startGame();
-      });
     });
 
     // Start button

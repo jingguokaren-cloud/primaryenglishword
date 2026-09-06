@@ -98,24 +98,6 @@ body::after {
 }
 .lesson-selector.show { display: flex; margin: 16px auto; }
 
-/* — Phrase / Sentence Type Tabs — */
-.type-tabs {
-  display: flex; justify-content: center; gap: 15px;
-  margin: 15px 0;
-}
-.type-tabs[hidden] { display: none; }
-.type-tab {
-  font-family: 'Outfit', sans-serif;
-  padding: 8px 20px; border: 2px solid transparent; border-radius: 20px;
-  background: rgba(255, 255, 255, 0.1); color: var(--text-primary);
-  cursor: pointer; font-size: 0.9rem; transition: var(--transition);
-}
-.type-tab:hover { border-color: var(--neon-blue); color: var(--neon-blue); }
-.type-tab.active {
-  background: rgba(56, 189, 248, 0.2); border-color: var(--neon-blue);
-  color: var(--neon-blue); font-weight: 600;
-}
-
 /* Row 1: all group tags in one line */
 .lesson-groups-bar {
   display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
@@ -174,6 +156,7 @@ body::after {
 }
 .target-display .char { display: inline-block; transition: var(--transition); padding: 0 2px; }
 .target-display .char.done { color: var(--neon-green); text-shadow: 0 0 12px rgba(52, 211, 153, 0.5); }
+.target-display .char.auto-skipped { color: var(--text-dim); text-shadow: none; }
 .target-display .char.current { color: var(--neon-blue); text-shadow: 0 0 18px rgba(0, 212, 255, 0.6); animation: pulse-glow 1.2s infinite; }
 .target-display .char.waiting { color: var(--text-dim); }
 .target-display .char.error { color: var(--neon-red); animation: shake 0.4s ease; text-shadow: 0 0 12px rgba(248, 113, 113, 0.6); }
